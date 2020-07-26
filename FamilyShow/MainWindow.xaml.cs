@@ -597,7 +597,7 @@ namespace Microsoft.FamilyShow
             mariageTag.Childs.Add(new ExportTagPerson("prenom", ExportTagPersonType.FirstName));
             mariageTag.Childs.Add(new ExportTagPerson("nom", ExportTagPersonType.LastName));
             mariageTag.Childs.Add(new ExportTagPerson("numeroGenealogique", ExportTagPersonType.GenealogicalNumber));
-            mariageTag.Childs.Add(new ExportTagPerson("numeroGenealogique", ExportTagPersonType.GenealogicalNumber));
+            mariageTag.Childs.Add(new ExportTagPerson("numero", ExportTagPersonType.OrderIntoSiblings));
             mariageTag.Childs.Add(new ExportTagPerson("prenomRapportee", ExportTagPersonType.MariagePartnerFirstName));
             mariageTag.Childs.Add(new ExportTagPerson("nomRapportee", ExportTagPersonType.MariagePartnerLastName));
             mariageTag.Childs.Add(new ExportTagPerson("genreRapportee", ExportTagPersonType.MariagePartnerGenre));
@@ -606,7 +606,7 @@ namespace Microsoft.FamilyShow
 
             xmlDoc = XmlWriter.Create(exportPath + "Mariages_2014b.xml");
             // on écrit la racine du fichier
-            xmlDoc.WriteStartElement(rootTag.Name);
+            xmlDoc.WriteStartElement(rootTag2.Name);
             WriteXmlNaissances(xmlDoc, mariageTag, family.Current, "", 0, 2014, FilterMariage);
             xmlDoc.WriteEndElement();
             xmlDoc.Close();
@@ -655,12 +655,10 @@ namespace Microsoft.FamilyShow
 
         public static List<object> FilterBirth(Person p, int startYear)
         {
-            int yearOfBirth;
             var res = new List<object>();
-            if (int.TryParse(p.YearOfBirth, out yearOfBirth))
+            if (int.TryParse(p.YearOfBirth, out int yearOfBirth) && yearOfBirth >= startYear)
             {
-                if (yearOfBirth >= startYear)
-                    res.Add(p);
+                res.Add(p);
             }
             return res;
         }
@@ -674,6 +672,16 @@ namespace Microsoft.FamilyShow
                 {
                     res.Add(spouseRelationship);
                 }
+            }
+            return res;
+        }
+
+        public static List<object> FilterDeath(Person p, int startYear)
+        {
+            var res = new List<object>();
+            if (int.TryParse(p.YearOfDeath, out int yearOfDeath) && yearOfDeath >= startYear)
+            {
+                res.Add(p);
             }
             return res;
         }
@@ -699,9 +707,9 @@ namespace Microsoft.FamilyShow
                 {
                     xmlDoc.WriteString(tag.GetValue(p, parentArbreLevelStr, levelChild));
                 }
-                else if (filterObj is Relationship)
+                else if (filterObj is SpouseRelationship)
                 {
-
+                    xmlDoc.WriteString(tag.GetValue(p, filterObj as SpouseRelationship, parentArbreLevelStr, levelChild));
                 }
 
             }

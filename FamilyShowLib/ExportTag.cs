@@ -41,6 +41,7 @@ namespace Microsoft.FamilyShowLib
         List<IExportTag> Childs { get; set; }
 
         string GetValue(Person rootPers, string genealogicalNumber, int childNumber);
+        string GetValue(Person rootPers, SpouseRelationship spouseRelationShip, string genealogicalNumber, int childNumber);
     }
 
     public class ExportTagPerson : IExportTag
@@ -119,16 +120,14 @@ namespace Microsoft.FamilyShowLib
                 case ExportTagPersonType.MariagePlace:
                     return spouseRelationShip.MarriagePlace;
                 case ExportTagPersonType.MariagePartnerGenre:
-                    break;
+                    return spouseRelationShip.RelationTo?.Gender.ToString();
                 case ExportTagPersonType.MariagePartnerFirstName:
-                    break;
+                    return spouseRelationShip.RelationTo?.FirstName;
                 case ExportTagPersonType.MariagePartnerLastName:
-                    break;
+                    return spouseRelationShip.RelationTo?.LastName;
                 default:
-                    break;
+                    return GetValue(rootPers, genealogicalNumber, childNumber);
             }
-
-            return "NO YET IMPLEMENTED";
         }
 
         internal static List<SpouseRelationship> ListSpouseRelationShip(Person person, int startYear)
