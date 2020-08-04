@@ -466,10 +466,7 @@ namespace Microsoft.FamilyShowLib
         public void OnContentChanged()
         {
             dirty = true;
-            if (ContentChanged != null)
-            {
-                ContentChanged(this, new ContentChangedEventArgs(null));
-            }
+            ContentChanged?.Invoke(this, new ContentChangedEventArgs(null));
         }
 
         /// <summary>
@@ -478,10 +475,7 @@ namespace Microsoft.FamilyShowLib
         public void OnContentChanged(Person newPerson)
         {
             dirty = true;
-            if (ContentChanged != null)
-            {
-                ContentChanged(this, new ContentChangedEventArgs(newPerson));
-            }
+            ContentChanged?.Invoke(this, new ContentChangedEventArgs(newPerson));
         }
 
         /// <summary> 
@@ -490,10 +484,7 @@ namespace Microsoft.FamilyShowLib
         public event EventHandler CurrentChanged;
         protected void OnCurrentChanged()
         {
-            if (CurrentChanged != null)
-            {
-                CurrentChanged(this, EventArgs.Empty);
-            }
+            CurrentChanged?.Invoke(this, EventArgs.Empty);
         }
 
         #region Add new people / relationships
@@ -569,10 +560,7 @@ namespace Microsoft.FamilyShowLib
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

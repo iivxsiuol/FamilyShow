@@ -27,10 +27,12 @@ namespace Microsoft.FamilyShow.Controls.FamilyData
     {
       InitializeComponent();
 
-      // Get the data that is bound to the list.
-      CollectionViewSource source = new CollectionViewSource();
-      source.Source = App.Family;
-      FamilyEditor.ItemsSource = source.View;
+            // Get the data that is bound to the list.
+            CollectionViewSource source = new CollectionViewSource
+            {
+                Source = App.Family
+            };
+            FamilyEditor.ItemsSource = source.View;
 
       // When the family changes we'll update things in this view
       App.Family.ContentChanged += new EventHandler<ContentChangedEventArgs>(OnFamilyContentChanged);

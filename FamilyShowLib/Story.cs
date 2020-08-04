@@ -175,8 +175,10 @@ namespace Microsoft.FamilyShowLib
             string storyAbsolutePath = Path.Combine(storiesLocation, storyFileName);
 
             // Convert the text into a TextRange.  This will allow saving the story to disk as RTF.
-            TextBlock block = new TextBlock();
-            block.Text = storyText;
+            TextBlock block = new TextBlock
+            {
+                Text = storyText
+            };
             TextRange range = new TextRange(block.ContentStart, block.ContentEnd);
 
             try
@@ -251,10 +253,7 @@ namespace Microsoft.FamilyShowLib
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

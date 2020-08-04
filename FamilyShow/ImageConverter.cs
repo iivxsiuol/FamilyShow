@@ -13,12 +13,14 @@ namespace Microsoft.FamilyShow
     {
       try
       {
-        BitmapImage bitmap = new BitmapImage(new Uri(value.ToString()));
+                BitmapImage bitmap = new BitmapImage(new Uri(value.ToString()))
+                {
 
-        // Use BitmapCacheOption.OnLoad to prevent binding the source holding on to the photo file.
-        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    // Use BitmapCacheOption.OnLoad to prevent binding the source holding on to the photo file.
+                    CacheOption = BitmapCacheOption.OnLoad
+                };
 
-        return bitmap;
+                return bitmap;
       }
       catch
       {

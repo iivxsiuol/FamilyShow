@@ -56,15 +56,17 @@ namespace Microsoft.FamilyShow
 
     private void AddButton_Click(object sender, RoutedEventArgs e)
     {
-      // Create a new person with the specified inputs
-      Person newPerson = new Person(FirstNameInputTextBox.Text, LastNameInputTextBox.Text);
+            // Create a new person with the specified inputs
+            Person newPerson = new Person(FirstNameInputTextBox.Text, LastNameInputTextBox.Text)
+            {
 
-      // Setup the properties based on the input
-      newPerson.Gender = ((bool)MaleRadioButton.IsChecked) ? Gender.Male : Gender.Female;
-      newPerson.BirthPlace = BirthPlaceInputTextBox.Text;
-      newPerson.IsLiving = true;
+                // Setup the properties based on the input
+                Gender = ((bool)MaleRadioButton.IsChecked) ? Gender.Male : Gender.Female,
+                BirthPlace = BirthPlaceInputTextBox.Text,
+                IsLiving = true
+            };
 
-      DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);
+            DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);
       if (birthdate != DateTime.MinValue)
       {
         newPerson.BirthDate = birthdate;
@@ -73,11 +75,13 @@ namespace Microsoft.FamilyShow
       // Setup the avatar photo
       if (!string.IsNullOrEmpty(avatarPhotoPath))
       {
-        Photo photo = new Photo(avatarPhotoPath);
-        photo.IsAvatar = true;
+                Photo photo = new Photo(avatarPhotoPath)
+                {
+                    IsAvatar = true
+                };
 
-        // Add the avatar photo to the person photos
-        newPerson.Photos.Add(photo);
+                // Add the avatar photo to the person photos
+                newPerson.Photos.Add(photo);
       }
 
       family.Current = newPerson;
@@ -125,9 +129,11 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void AvatarGrid_MouseDown(object sender, MouseButtonEventArgs e)
     {
-      CommonDialog dialog = new CommonDialog();
-      dialog.InitialDirectory = Environment.SpecialFolder.MyPictures.ToString();
-      dialog.Filter.Add(new FilterEntry(Properties.Resources.JpegFiles, Properties.Resources.JpegExtension));
+            CommonDialog dialog = new CommonDialog
+            {
+                InitialDirectory = Environment.SpecialFolder.MyPictures.ToString()
+            };
+            dialog.Filter.Add(new FilterEntry(Properties.Resources.JpegFiles, Properties.Resources.JpegExtension));
       dialog.Filter.Add(new FilterEntry(Properties.Resources.PngFiles, Properties.Resources.PngExtension));
       dialog.Title = Properties.Resources.Open;
       dialog.ShowOpen();

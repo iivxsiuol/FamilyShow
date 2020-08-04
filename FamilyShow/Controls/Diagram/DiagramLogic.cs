@@ -230,10 +230,12 @@ namespace Microsoft.FamilyShow.Controls.Diagram
     /// </summary>
     private DiagramNode CreateNode(Person person, NodeType type, bool clickEvent)
     {
-      DiagramNode node = new DiagramNode();
-      node.Person = person;
-      node.Type = type;
-      if (clickEvent)
+            DiagramNode node = new DiagramNode
+            {
+                Person = person,
+                Type = type
+            };
+            if (clickEvent)
         node.Click += nodeClickHandler;
 
       return node;

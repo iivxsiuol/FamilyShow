@@ -101,16 +101,14 @@ namespace Microsoft.FamilyShow.Controls.Diagram
     public event EventHandler DiagramUpdated;
     private void OnDiagramUpdated()
     {
-      if (DiagramUpdated != null)
-        DiagramUpdated(this, EventArgs.Empty);
-    }
+            DiagramUpdated?.Invoke(this, EventArgs.Empty);
+        }
 
     public event EventHandler DiagramPopulated;
     private void OnDiagramPopulated()
     {
-      if (DiagramPopulated != null)
-        DiagramPopulated(this, EventArgs.Empty);
-    }
+            DiagramPopulated?.Invoke(this, EventArgs.Empty);
+        }
 
     #endregion
 
@@ -183,12 +181,14 @@ namespace Microsoft.FamilyShow.Controls.Diagram
 
     public Diagram()
     {
-      // Init the diagram logic, which handles all of the layout logic.
-      logic = new DiagramLogic();
-      logic.NodeClickHandler = new RoutedEventHandler(OnNodeClick);
+            // Init the diagram logic, which handles all of the layout logic.
+            logic = new DiagramLogic
+            {
+                NodeClickHandler = new RoutedEventHandler(OnNodeClick)
+            };
 
-      // Can have an empty People collection when in design tools such as Blend.
-      if (logic.Family != null)
+            // Can have an empty People collection when in design tools such as Blend.
+            if (logic.Family != null)
       {
         logic.Family.ContentChanged += new EventHandler<ContentChangedEventArgs>(OnFamilyContentChanged);
         logic.Family.CurrentChanged += new EventHandler(OnFamilyCurrentChanged);

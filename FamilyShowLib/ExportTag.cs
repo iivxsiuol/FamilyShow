@@ -24,7 +24,8 @@ namespace Microsoft.FamilyShowLib
         MariagePlace,
         MariagePartnerGenre,
         MariagePartnerFirstName,
-        MariagePartnerLastName
+        MariagePartnerLastName,
+        NumberFromRoot // number of generation from the root. For example, the person 4.1.5 has this value to 3
     }
 
     public enum ExportTagGenerationType
@@ -40,8 +41,8 @@ namespace Microsoft.FamilyShowLib
         string Name { get; set; }
         List<IExportTag> Childs { get; set; }
 
-        string GetValue(Person rootPers, string genealogicalNumber, int childNumber);
-        string GetValue(Person rootPers, SpouseRelationship spouseRelationShip, string genealogicalNumber, int childNumber);
+        string GetValue(Person rootPers, string genealogicalNumber);
+        string GetValue(Person rootPers, SpouseRelationship spouseRelationShip, string genealogicalNumber);
     }
 
     public class ExportTagPerson : IExportTag
@@ -61,7 +62,7 @@ namespace Microsoft.FamilyShowLib
             Type = persontype;
         }
 
-        public string GetValue(Person rootPers, string genealogicalNumber, int childNumber)
+        public string GetValue(Person rootPers, string genealogicalNumber)
         {
             switch (Type)
             {
@@ -99,10 +100,13 @@ namespace Microsoft.FamilyShowLib
                     return rootPers.Mother?.LastName;
 
                 case ExportTagPersonType.OrderIntoSiblings:
-                    return $"{childNumber}";
+                    return genealogicalNumber.Split(new[] { '.' }).Last();
 
                 case ExportTagPersonType.GenealogicalNumber:
                     return genealogicalNumber;
+
+                case ExportTagPersonType.NumberFromRoot:
+                    return (genealogicalNumber.Split(new[] { '.' }).Length + 1).ToString();
 
                 default:
                     break;
@@ -111,7 +115,7 @@ namespace Microsoft.FamilyShowLib
             return "NO YET IMPLEMENTED";
         }
 
-        public string GetValue(Person rootPers, SpouseRelationship spouseRelationShip, string genealogicalNumber, int childNumber)
+        public string GetValue(Person rootPers, SpouseRelationship spouseRelationShip, string genealogicalNumber)
         {
             switch (Type)
             {
@@ -126,7 +130,7 @@ namespace Microsoft.FamilyShowLib
                 case ExportTagPersonType.MariagePartnerLastName:
                     return spouseRelationShip.RelationTo?.LastName;
                 default:
-                    return GetValue(rootPers, genealogicalNumber, childNumber);
+                    return GetValue(rootPers, genealogicalNumber);
             }
         }
 
