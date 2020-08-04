@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2006"
     xmlns:familyData="clr-namespace:Microsoft.FamilyShow.Controls.FamilyData"
     xmlns:local="clr-namespace:Microsoft.FamilyShow"
+    xmlns:localconv="clr-namespace:Microsoft.FamilyShow.Converters"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     DataContextChanged="UserControl_DataContextChanged">
@@ -20,6 +21,7 @@
 
             <!--  Converter for showing/hiding features based on boolean property  -->
             <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <localconv:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter" />
 
             <!--  Converter for disabling the death related textboxes  -->
             <local:NotConverter x:Key="NotConverter" />
@@ -1521,7 +1523,8 @@
                         <Label
                             Content="Date of Dea_th"
                             Foreground="{DynamicResource InputFontColor}"
-                            Target="{Binding ElementName=DeathDateEditTextBox, Mode=OneWay}" />
+                            Target="{Binding ElementName=DeathDateEditTextBox, Mode=OneWay}"
+                            Visibility="{Binding IsChecked, Converter={StaticResource InvertBoolToVisibilityConverter}, ElementName=IsLivingEditCheckBox}" />
                         <TextBox
                             x:Name="DeathDateEditTextBox"
                             Width="135"
@@ -1529,12 +1532,14 @@
                             HorizontalAlignment="Left"
                             IsEnabled="{Binding Path=IsLiving, Converter={StaticResource NotConverter}, Mode=Default}"
                             Text="{Binding Path=DeathDate, Converter={StaticResource DateFormattingConverter}, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap"
+                            Visibility="{Binding IsChecked, Converter={StaticResource InvertBoolToVisibilityConverter}, ElementName=IsLivingEditCheckBox}" />
                         <!--<TextBox TextWrapping="Wrap" x:Name="DeathDateEditTextBox" Width="135" HorizontalAlignment="Left" Margin="5,0,0,0" IsEnabled="{Binding Path=IsLiving, Converter={StaticResource NotConverter}, Mode=Default}" Text="{Binding Path=DeathDate, Converter={StaticResource DateFormattingConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>-->
                         <Label
                             Content="Place of Deat_h"
                             Foreground="{DynamicResource InputFontColor}"
-                            Target="{Binding ElementName=DeathPlaceEditTextBox, Mode=OneWay}" />
+                            Target="{Binding ElementName=DeathPlaceEditTextBox, Mode=OneWay}"
+                            Visibility="{Binding IsChecked, Converter={StaticResource InvertBoolToVisibilityConverter}, ElementName=IsLivingEditCheckBox}" />
                         <TextBox
                             x:Name="DeathPlaceEditTextBox"
                             Width="135"
@@ -1542,7 +1547,8 @@
                             HorizontalAlignment="Left"
                             IsEnabled="{Binding Path=IsLiving, Converter={StaticResource NotConverter}, Mode=Default}"
                             Text="{Binding Path=DeathPlace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap"
+                            Visibility="{Binding IsChecked, Converter={StaticResource InvertBoolToVisibilityConverter}, ElementName=IsLivingEditCheckBox}" />
                         <Border
                             Height="42"
                             Margin="0,10,0,0"
